@@ -28,7 +28,10 @@ function getRootWord(){
     return rootWord;
 }
 
+function getSubWords(){
+    //make array with root word in it letter by letter
+    //loop through gameDict 
+}
+
 gameDictionary();
-console.log(rootWords.length);
-console.log(gameDict.length);
-console.log(getRootWord());
+console.log("------");
