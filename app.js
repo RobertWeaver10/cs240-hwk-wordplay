@@ -44,6 +44,7 @@ function getSubWords(){
             subWords.push(gameDict[i]);
         }
     }
+    subWords.sort();
 }
 
 function Game (){
@@ -56,26 +57,24 @@ function Game (){
         //print each string to console line by line
         let str = "";
         for (let j = 0; j < subWords[i].length; j++){
-            str + "-";
+            str += "-";
         }
         guesses.push(str);
-        console.log(str);
     }
 
+    console.log(subWords[subWords.length - 1]);
+
+    for (let k = 0; k < guesses.length; k++){
+        console.log(guesses[k]);
+    }
+
+    //for (let z = 0; z < subWords.length; z++){
+        //console.log(subWords[z]);
+    //}
+
+    
     let userInput = prompt("guess a word");
     while (userInput != "*"){
-        //if they did replace the - string with word of equivalent index in subWords
-            //alert user they are correct
-            //clear the console
-            //print updated list of words and guesses
-        if (subWords.indexOf(userInput) !== -1){
-            guesses.splice(subWords.indexOf(userInput), subWords.indexOf(userInput), userInput);
-            alert("you guessed a word!");
-            console.clear();
-            for (let i = 0; i < guesses.length; i++){
-                console.log(guesses[i]);
-            }
-        }
         //if they guess something too short or long
             //alert user they guessed an invalid word
             //keep console looking the same
@@ -94,8 +93,23 @@ function Game (){
         if (guesses.indexOf(userInput) === -1){
             alert("word not in list of words");
         }
+        //if they did replace the - string with word of equivalent index in subWords
+            //alert user they are correct
+            //clear the console
+            //print updated list of words and guesses
+        if (subWords.indexOf(userInput) !== -1){
+            guesses.splice(subWords.indexOf(userInput), subWords.indexOf(userInput), userInput);
+            alert("you guessed a word!");
+            console.clear();
+            console.log(subWords[subWords.length -1]);
+            for (let i = 0; i < guesses.length; i++){
+                console.log(guesses[i]);
+            }
+        }
         //prompt user for next guess
         userInput = prompt("guess another word");
     }
+    
 }
 
+Game();
