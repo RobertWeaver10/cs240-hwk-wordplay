@@ -66,9 +66,22 @@ function hasSubString(str, sub) {
  * takes the rootWord and goes through the list of game words to find the substrings
  */
 function getSubWords(){
-    for (let i = 0; i < gameDict.length; i++){ //compare root word to game dictionary
-        if (hasSubString(root, gameDict[i])){  //if the word at i in game dict is a substring of root
-            subWords.push(gameDict[i]); //save the subset of words to new array
+    //convert root word to array
+    var rootArr = root.split(``);
+	//for every word in gameDictionary
+    for (let i = 0; i < gameDict.length; i++){
+        //convert word[I] to array
+        var wordArr = gameDict[i].split(``);
+		//compare to see if each letter appears in root word
+        for (let j = 0; j < wordArr.length; j++){
+            if (rootArr.includes(wordArr[i])){
+                //remove each letter from root word array if it matches
+                var n = rootArr.indexOf(wordArr[i]);
+                rootArr.slice(rootArr.indexOf(wordArr[i]),)
+            }
+		    //if the word’s letters are contained
+			    //convert word[I] back to string
+			    //save to subWords
         }
     }
 }
