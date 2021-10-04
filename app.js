@@ -1,14 +1,7 @@
-//what do we need to do to create game?
-// 1) get a word from the dictionary array that is 6 letters long
-// 2) go through and find all possible words from subsets of letters that are at least 3 letters long
-    // would be good to save all possible words to array. would take awhile at start of game but make for smooth gameplay
-// 3) display the root word at the top of the console with letters scrambled
-// 4) display the list of sub words with the letters hidden by "-"
-// 5) game loop that continuously prompts users for input and will alert user of state of their guess
 let gameDict = [];
 let rootWords = [];
 let subWords = [];
-
+let root = ``;
 /* 
 takes full dictionary and takes out the words of appropriate length for our game
 */
@@ -32,15 +25,38 @@ function getRandomInt(max) {
 
 /**
  * takes the list of 6 letter long words and picks a random one
- * @return the root word randomly chosen
+ * @returns the root word randomly chosen
  */
 function getRootWord(){
-    let root = rootWords[getRandomInt(rootWords.length)];
+    root = rootWords[getRandomInt(rootWords.length)];
     return root;
 }
 
 /**
- * checks if a string is a substring of a word
+ * takes the root word and then randomizes the letters
+ * @returns the shuffled root word
+ */
+function randomizeRoot(){
+    var arr = root.split(``);
+    var n = arr.length;
+    for(var i=0 ; i<n-1 ; ++i) {
+        var j = getRandomInt(n);       // Get random of [0, n-1]
+            
+        var temp = arr[i];             // Swap arr[i] and arr[j]
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+          
+    root = arr.join('');                // Convert Array to string
+    return root;                        // Return shuffled string
+}
+
+
+/**
+ * takes two strings and checks whether sub is a substring of str
+ * @param {*} str 
+ * @param {*} sub 
+ * @returns true if sub is a substring of str, if not returns false
  */
 function hasSubString(str, sub) {
     return str.indexOf(sub) !== -1;
@@ -50,14 +66,9 @@ function hasSubString(str, sub) {
  * takes the rootWord and goes through the list of game words to find the substrings
  */
 function getSubWords(){
-    //compare root word to words in game dict
-    //compare the letters, make sure each letter only appears a max of once
-    //save the subset of words to new array
-    let rootWord = getRootWord();
-
-    for (let i = 0; i < gameDict.length; i++){
-        if (hasSubString(rootWord, gameDict[i])){
-            subWords.push(gameDict[i]);
+    for (let i = 0; i < gameDict.length; i++){ //compare root word to game dictionary
+        if (hasSubString(root, gameDict[i])){  //if the word at i in game dict is a substring of root
+            subWords.push(gameDict[i]); //save the subset of words to new array
         }
     }
 }
@@ -67,36 +78,35 @@ function getSubWords(){
  * includes the game loop that constantly prompts users for guesses until the game ends
  */
 function Game (){
+    //Pre game prep
     gameDictionary();
+    getRootWord();
     getSubWords();
-    let guesses = [];
-    let loopCounter = 0;
-    subWords.sort();
+    //randomizeRoot();
+    var guesses = [];
+    var loopCounter = 0;
+    subWords.sort((a,b) => a.length - b.length);
 
-    for (let i = 0; i < subWords.length; i++){
-        //go through all the words and create a new string of same length but with -
-        //print each string to console line by line
-        let str = "";
-        for (let j = 0; j < subWords[i].length; j++){
-            str += "-";
+    for (let i = 0; i < subWords.length; i++){ //go through all the words and create a new string of same length but with -
+        var str = ``;
+        for (let j = 0; j < subWords[i].length; j++){ //print each string to console line by line
+            str += `-`;
         }
         guesses.push(str);
     }
+    guesses.sort((a,b) => a.length - b.length);
 
-    console.log(subWords[subWords.length - 1]);
+    console.log(`root word: ` + root); //print the shuffled root word
 
-    for (let k = 0; k < guesses.length; k++){
-        console.log(guesses[k]);
+    for (let i = 0; i < guesses.length; i++){ //print the guesses array line by line
+        console.log(guesses[i]);
     }
  
-    let userInput = prompt("guess a word");
+    //Game loop
     while (loopCounter < subWords.length){
-        //if they enter a *
-            //clear console
-            //print the list of words to the console
-            //alert user they ended game
-            //leave while loop
-        if (userInput === null){
+        let userInput = prompt("guess a word");
+
+        if (userInput === null){ 
             console.clear();
             for (let i = 0; i < subWords.length; i++){
                 console.log(subWords[i]);
@@ -104,43 +114,60 @@ function Game (){
             alert("game has been ended, words now revealed");
             break;
         }
-        //if they guess something too short or long
-            //alert user they guessed an invalid word
-            //keep console looking the same
+
+        else if (userInput === `*`){
+            console.clear();
+            randomizeRoot();
+            console.log(root);
+            for(let i = 0; i < guesses.length; i++){
+                console.log(guesses[i]);
+            }
+        }
+        
         else if (userInput.length < 3 || userInput > 6){
             alert("guess was too short or long");
+            console.clear();
+            console.log(root);
+            for(let i = 0; i < guesses.length; i++){
+                console.log(guesses[i]);
+            }
         }
-        //if they guess a word they already have
-            //alert user they already guessed that word
-            //keep console the same
+        
         else if (guesses.includes(userInput)){
             alert("word already been guessed");
+            console.clear();
+            console.log(root);
+            for(let i = 0; i < guesses.length; i++){
+                console.log(guesses[i]);
+            }
         }
-        //if they guess a word that is not in the sublist of words
-            //alert user the word they guessed is not in the sublist of words
-            //keep console the same
+        
         else if (subWords.indexOf(userInput) === -1){
             alert("word not in list of words");
+            console.clear();
+            console.log(root);
+            for(let i = 0; i < guesses.length; i++){
+                console.log(guesses[i]);
+            }
         }
-        //if they guess a word, replace the - string with word of equivalent index in subWords
-            //alert user they are correct
-            //clear the console
-            //print updated list of words and guesses
-            // if clause: (subWords.indexOf(userInput) !== -1)
+        
         else{
-            guesses.splice(subWords.indexOf(userInput), subWords.indexOf(userInput), userInput);
+            var tempIndex = subWords.indexOf(userInput);
+            var temp = subWords[tempIndex];
+            guesses[tempIndex] = temp;
+
             alert("you guessed a word!");
             console.clear();
-            console.log(subWords[subWords.length -1]); //TO DO: change to variable, allow for randomizing word
+            console.log(root);
             for (let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
+            if (loopCounter == subWords.length-1){
+                alert(`congrats! You won the game!`);
+            }
             loopCounter++;
         }
-        //prompt user for next guess
-        userInput = prompt("guess another word");
     }
-    
 }
 
 Game();
