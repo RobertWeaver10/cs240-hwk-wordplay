@@ -118,7 +118,7 @@ function Game (){
         else if (userInput === `*`){
             console.clear();
             randomizeRoot();
-            console.log(root);
+            console.log(`root word: ` + root);
             for(let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
@@ -127,7 +127,7 @@ function Game (){
         else if (userInput.length < 3 || userInput > 6){
             alert("guess was too short or long");
             console.clear();
-            console.log(root);
+            console.log(`root word: ` + root);
             for(let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
@@ -136,7 +136,7 @@ function Game (){
         else if (guesses.includes(userInput)){
             alert("word already been guessed");
             console.clear();
-            console.log(root);
+            console.log(`root word: ` + root);
             for(let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
@@ -145,7 +145,7 @@ function Game (){
         else if (subWords.indexOf(userInput) === -1){
             alert("word not in list of words");
             console.clear();
-            console.log(root);
+            console.log(`root word: ` + root);
             for(let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
@@ -158,7 +158,7 @@ function Game (){
 
             alert("you guessed a word!");
             console.clear();
-            console.log(root);
+            console.log(`root word: ` + root);
             for (let i = 0; i < guesses.length; i++){
                 console.log(guesses[i]);
             }
