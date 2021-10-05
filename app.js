@@ -5,6 +5,8 @@ let root = ``;
 let scrambleRoot = ``;
 
 /**
+ * found on stack overflow after seeing that in a few cases there would be special characters
+ * in the list of subwords. figured i should add in to handle this.
  * takes a string and returns true if the string does not contain special characters
  * @param {*} str the string we want to check for special characters
  * @returns true when input string has no special characters
